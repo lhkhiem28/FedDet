@@ -65,6 +65,7 @@ class Client(fl.client.NumPyClient):
             self.save_ckp_dir, 
             self.fitting_verbose, 
         )
+        self.round += 1
         return self.get_parameters(config = {}), len(fit_loaders["fit"].dataset), results
     def evaluate(self, 
         parameters, config, 
@@ -95,12 +96,12 @@ datasets = {
 fit_loaders = {
     "fit":torch.utils.data.DataLoader(
         datasets["fit"], collate_fn = datasets["fit"].collate_fn, 
-        num_workers = 2, batch_size = 8, 
+        num_workers = 2, batch_size = 16, 
         shuffle = True, 
     ), 
     "evaluate":torch.utils.data.DataLoader(
         datasets["evaluate"], collate_fn = datasets["evaluate"].collate_fn, 
-        num_workers = 2, batch_size = 8, 
+        num_workers = 2, batch_size = 16, 
         shuffle = False, 
     ), 
 }
@@ -123,6 +124,7 @@ client = Client(
     args.num_epochs, 
     args.num_rounds, 
     optimizer, 
+    lr_scheduler, 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu"), 
     save_ckp_dir = save_ckp_dir, 
     fitting_verbose = True, 

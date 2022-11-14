@@ -11,7 +11,7 @@ def client_fit_fn(
     save_ckp_dir = "./", 
     fitting_verbose = True, 
 ):
-    print("\nStart Fitting ...\n" + " = "*16)
+    print("\nStart Client Fitting ...\n" + " = "*16)
     model = model.to(device)
 
     for epoch in tqdm.tqdm(range(1, num_epochs + 1), disable = fitting_verbose):
