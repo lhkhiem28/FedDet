@@ -61,7 +61,7 @@ def client_fit_fn(
             running_classes, 
         )[2].mean()
         if fitting_verbose:
-            print("{:<8} - loss:{:.4f}".format(
+            print("{:<8} - map:{:.4f}".format(
                 "evaluate", evaluate_map, 
             ))
 
