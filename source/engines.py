@@ -61,7 +61,7 @@ def client_fit_fn(
             running_classes, 
         )[2].mean()
         if fitting_verbose:
-            print("{:<8} - map:{:.4f}".format(
+            print("{:<8} -  map:{:.4f}".format(
                 "evaluate", evaluate_map, 
             ))
 
@@ -71,3 +71,39 @@ def client_fit_fn(
         "fit_loss":fit_loss, 
         "evaluate_map":evaluate_map, 
     }
+
+def server_test_fn(
+    test_loader, 
+    model, 
+    device = torch.device("cpu"), 
+):
+    print("\nStart Server Testing ...\n" + " = "*16)
+    model = model.to(device)
+
+    with torch.no_grad():
+        model.eval()
+        running_classes, running_statistics = [], []
+        for images, labels in tqdm.tqdm(test_loader):
+            images, labels = images.to(device), labels.to(device)
+            labels[:, 2:] = xywh2xyxy(labels[:, 2:])
+            labels[:, 2:] = labels[:, 2:]*int(test_loader.dataset.image_size)
+
+            logits = model(images)
+            logits = non_max_suppression(
+                logits, 
+                conf_thres = 0.1, iou_thres = 0.5, 
+            )
+
+            running_classes, running_statistics = running_classes + labels[:, 1].tolist(), running_statistics + get_batch_statistics(
+                [logit.cpu() for logit in logits], labels.cpu(), 
+                0.5, 
+            )
+    test_map = ap_per_class(
+        *[np.concatenate(stats, 0) for stats in list(zip(*running_statistics))], 
+        running_classes, 
+    )[2].mean()
+    print("{:<8} -  map:{:.4f}".format(
+        "test", test_map, 
+    ))
+
+    print("\nFinish Server Testing ...\n" + " = "*16)

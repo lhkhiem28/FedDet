@@ -3,6 +3,7 @@ import os, sys
 from libs import *
 from data import DetImageDataset
 from strategies import FedAvg
+from engines import server_test_fn
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--server_address", type = str, default = "127.0.0.1"), parser.add_argument("--server_port", type = int)
@@ -12,7 +13,7 @@ parser.add_argument("--num_epochs", type = int, default = 5)
 args = parser.parse_args()
 wandb.login()
 wandb.init(
-    project = "feddet", name = "{} - {}".format(args.dataset, args.num_clients), 
+    project = "feddet", name = "{} - {} clients".format(args.dataset, args.num_clients), 
 )
 
 initial_model = Darknet("pytorchyolo/configs/yolov3.cfg")
@@ -35,3 +36,21 @@ fl.server.start_server(
     )
 )
 wandb.finish()
+
+dataset = DetImageDataset(
+    images_path = "../datasets/VOC2007/test/images", labels_path = "../datasets/VOC2007/test/labels"
+    , image_size = 416
+    , augment = False
+    , multiscale = False
+)
+test_loader = torch.utils.data.DataLoader(
+    dataset, collate_fn = dataset.collate_fn, 
+    num_workers = 8, batch_size = 32, 
+    shuffle = False, 
+)
+model = torch.load("../ckps/{}/server.ptl".format(args.dataset))
+server_test_fn(
+    test_loader, 
+    model, 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu"), 
+)
