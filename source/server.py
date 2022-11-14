@@ -12,7 +12,6 @@ parser.add_argument("--num_epochs", type = int, default = 5)
 args = parser.parse_args()
 wandb.login()
 wandb.init(
-    mode = "disabled", 
     project = "feddet", name = "{} - {}".format(args.dataset, args.num_clients), 
 )
 
