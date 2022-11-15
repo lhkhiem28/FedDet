@@ -13,7 +13,7 @@ parser.add_argument("--num_epochs", type = int, default = 5)
 args = parser.parse_args()
 wandb.login()
 wandb.init(
-    project = "feddet", name = "{} - {} clients".format(args.dataset, args.num_clients), 
+    project = "feddet", name = "{} - {:2} clients".format(args.dataset, args.num_clients), 
 )
 
 initial_model = Darknet("pytorchyolo/configs/yolov3.cfg")
