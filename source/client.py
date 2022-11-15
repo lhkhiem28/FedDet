@@ -96,12 +96,12 @@ datasets = {
 fit_loaders = {
     "fit":torch.utils.data.DataLoader(
         datasets["fit"], collate_fn = datasets["fit"].collate_fn, 
-        num_workers = 2, batch_size = 16, 
+        num_workers = 1, batch_size = 8, 
         shuffle = True, 
     ), 
     "evaluate":torch.utils.data.DataLoader(
         datasets["evaluate"], collate_fn = datasets["evaluate"].collate_fn, 
-        num_workers = 2, batch_size = 16, 
+        num_workers = 1, batch_size = 8, 
         shuffle = False, 
     ), 
 }

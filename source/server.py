@@ -45,12 +45,12 @@ dataset = DetImageDataset(
 )
 test_loader = torch.utils.data.DataLoader(
     dataset, collate_fn = dataset.collate_fn, 
-    num_workers = 8, batch_size = 32, 
+    num_workers = 1, batch_size = 8, 
     shuffle = False, 
 )
 model = torch.load("../ckps/{}/server.ptl".format(args.dataset))
 server_test_fn(
     test_loader, 
     model, 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu"), 
+    device = torch.device("cpu"), 
 )
