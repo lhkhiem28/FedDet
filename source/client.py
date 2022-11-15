@@ -84,24 +84,24 @@ datasets = {
         images_path = "../datasets/VOC2007/clients/client_{}/fit/images".format(args.cid), labels_path = "../datasets/VOC2007/clients/client_{}/fit/labels".format(args.cid)
         , image_size = 416
         , augment = True
-        , multiscale = True
+        # , multiscale = True
     ), 
     "evaluate":DetImageDataset(
         images_path = "../datasets/VOC2007/clients/client_{}/evaluate/images".format(args.cid), labels_path = "../datasets/VOC2007/clients/client_{}/evaluate/labels".format(args.cid)
         , image_size = 416
         , augment = False
-        , multiscale = False
+        # , multiscale = False
     ), 
 }
 fit_loaders = {
     "fit":torch.utils.data.DataLoader(
         datasets["fit"], collate_fn = datasets["fit"].collate_fn, 
-        num_workers = 1, batch_size = 8, 
+        num_workers = 1, batch_size = 2, 
         shuffle = True, 
     ), 
     "evaluate":torch.utils.data.DataLoader(
         datasets["evaluate"], collate_fn = datasets["evaluate"].collate_fn, 
-        num_workers = 1, batch_size = 8, 
+        num_workers = 1, batch_size = 2, 
         shuffle = False, 
     ), 
 }

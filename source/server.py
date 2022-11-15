@@ -13,7 +13,7 @@ parser.add_argument("--num_epochs", type = int, default = 5)
 args = parser.parse_args()
 wandb.login()
 wandb.init(
-    project = "feddet", name = "{} - {:2} clients".format(args.dataset, args.num_clients), 
+    project = "[feddet]" + " - " + args.dataset, name = "{:2} clients".format(args.num_clients), 
 )
 
 initial_model = Darknet("pytorchyolo/configs/yolov3.cfg")
@@ -45,7 +45,7 @@ dataset = DetImageDataset(
 )
 test_loader = torch.utils.data.DataLoader(
     dataset, collate_fn = dataset.collate_fn, 
-    num_workers = 1, batch_size = 8, 
+    num_workers = 1, batch_size = 2, 
     shuffle = False, 
 )
 model = torch.load("../ckps/{}/server.ptl".format(args.dataset))
