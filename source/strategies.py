@@ -22,6 +22,8 @@ class FedAvg(fl.server.strategy.FedAvg):
         self.save_ckp_dir = save_ckp_dir
         super().__init__(*args, **kwargs)
 
+        self.best_map = 0
+
     def aggregate_fit(self, 
         server_round, 
         results, failures, 
@@ -36,7 +38,7 @@ class FedAvg(fl.server.strategy.FedAvg):
             server_round, 
             results, failures, 
         )
-        if aggregated_parameters is not None:
+        if aggregated_parameters is not None and self.best_map < aggregated_metrics["evaluate_map"]:
             self.initial_model.load_state_dict(
                 collections.OrderedDict(
                     {key:torch.tensor(value) for key, value in zip(self.initial_model.state_dict().keys(), fl.common.parameters_to_ndarrays(aggregated_parameters))}
@@ -44,5 +46,7 @@ class FedAvg(fl.server.strategy.FedAvg):
                 strict = True, 
             )
             torch.save(self.initial_model, "{}/server.ptl".format(self.save_ckp_dir))
+
+            self.best_map = aggregated_metrics["evaluate_map"]
 
         return aggregated_parameters, {}

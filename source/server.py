@@ -52,5 +52,5 @@ model = torch.load("../ckps/{}/server.ptl".format(args.dataset))
 server_test_fn(
     test_loader, 
     model, 
-    device = torch.device("cpu"), 
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu"), 
 )
