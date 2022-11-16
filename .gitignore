@@ -1,6 +1,6 @@
 /datasets
 
 **/__pycache__
-**/nohup.out
+**/*.out
 **/wandb
 /ckps
