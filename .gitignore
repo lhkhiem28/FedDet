@@ -1,6 +1,13 @@
-/datasets
+datasets/VOC2007/clients/*/*/images/*
+!datasets/VOC2007/clients/*/*/images/.placeholder
+datasets/VOC2007/clients/*/*/labels/*
+!datasets/VOC2007/clients/*/*/labels/.placeholder
+datasets/VOC2007/test/images/*
+!datasets/VOC2007/test/images/2007_000001.jpg
+datasets/VOC2007/test/labels/*
+!datasets/VOC2007/test/labels/2007_000001.txt
 
 **/__pycache__
 **/*.out
 **/wandb
-/ckps
+ckps/*
