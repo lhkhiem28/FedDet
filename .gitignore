@@ -3,9 +3,9 @@ datasets/VOC2007/clients/*/*/images/*
 datasets/VOC2007/clients/*/*/labels/*
 !datasets/VOC2007/clients/*/*/labels/.placeholder
 datasets/VOC2007/test/images/*
-!datasets/VOC2007/test/images/2007_000001.jpg
+!datasets/VOC2007/test/images/.placeholder
 datasets/VOC2007/test/labels/*
-!datasets/VOC2007/test/labels/2007_000001.txt
+!datasets/VOC2007/test/labels/.placeholder
 
 **/__pycache__
 **/*.out
