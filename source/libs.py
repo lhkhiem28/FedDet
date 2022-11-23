@@ -1,7 +1,7 @@
 
 import os, sys
 import warnings; warnings.filterwarnings("ignore")
-import pytorch_lightning; pytorch_lightning.seed_everything(22)
+# import pytorch_lightning; pytorch_lightning.seed_everything(22)
 
 import collections
 import glob

@@ -6,17 +6,17 @@ from strategies import FedAvg
 from engines import server_test_fn
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--server_address", type = str, default = "127.0.0.1"), parser.add_argument("--server_port", type = int)
+parser.add_argument("--server_address", type = str, default = "127.0.0.1"), parser.add_argument("--server_port", type = int, default = 8080)
 parser.add_argument("--dataset", type = str, default = "VOC2007"), parser.add_argument("--num_clients", type = int, default = 2)
 parser.add_argument("--num_rounds", type = int, default = 250)
 parser.add_argument("--num_epochs", type = int, default = 5)
 args = parser.parse_args()
 wandb.login()
 wandb.init(
-    project = "[feddet]" + " - " + args.dataset, name = "{:2} clients".format(args.num_clients), 
+    project = "FedDet" + "-" + args.dataset + "-" + "Simulation", name = "yolov3-tiny - {:2} clients".format(args.num_clients), 
 )
 
-initial_model = Darknet("pytorchyolo/configs/yolov3.cfg")
+initial_model = Darknet("pytorchyolo/configs/yolov3-tiny.cfg")
 initial_model.load_darknet_weights("../ckps/darknet53.conv.74")
 initial_parameters = fl.common.ndarrays_to_parameters(
     [value.cpu().numpy() for key, value in initial_model.state_dict().items()]
@@ -39,7 +39,7 @@ wandb.finish()
 
 dataset = DetImageDataset(
     images_path = "../datasets/VOC2007/test/images", labels_path = "../datasets/VOC2007/test/labels"
-    , image_size = 416
+    , image_size = 256
     , augment = False
     , multiscale = False
 )

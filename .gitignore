@@ -6,6 +6,7 @@ datasets/VOC2007/test/images/*
 !datasets/VOC2007/test/images/.placeholder
 datasets/VOC2007/test/labels/*
 !datasets/VOC2007/test/labels/.placeholder
+**/*.zip
 
 **/__pycache__
 **/*.out

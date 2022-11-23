@@ -16,7 +16,7 @@ def client_fit_fn(
 
     for epoch in tqdm.tqdm(range(1, num_epochs + 1), disable = fitting_verbose):
         if fitting_verbose:
-            print("epoch {:2}/{:2}".format(epoch, num_epochs) + "\n" + " - "*16)
+            print("epoch {:2}/{:2}".format(epoch, num_epochs) + "\n" + "-"*16)
         model.train()
         running_loss = 0.0
         for images, labels in tqdm.tqdm(fit_loaders["fit"], disable = not fitting_verbose):

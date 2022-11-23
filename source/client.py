@@ -74,7 +74,7 @@ class Client(fl.client.NumPyClient):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--server_address", type = str, default = "127.0.0.1"), parser.add_argument("--server_port", type = int)
+    parser.add_argument("--server_address", type = str, default = "127.0.0.1"), parser.add_argument("--server_port", type = int, default = 8080)
     parser.add_argument("--dataset", type = str, default = "VOC2007"), parser.add_argument("--cid", type = int)
     parser.add_argument("--num_rounds", type = int, default = 250)
     parser.add_argument("--num_epochs", type = int, default = 5)
@@ -83,13 +83,13 @@ if __name__ == "__main__":
     datasets = {
         "fit":DetImageDataset(
             images_path = "../datasets/VOC2007/clients/client_{}/fit/images".format(args.cid), labels_path = "../datasets/VOC2007/clients/client_{}/fit/labels".format(args.cid)
-            , image_size = 416
+            , image_size = 256
             , augment = True
             , multiscale = True
         ), 
         "evaluate":DetImageDataset(
             images_path = "../datasets/VOC2007/clients/client_{}/evaluate/images".format(args.cid), labels_path = "../datasets/VOC2007/clients/client_{}/evaluate/labels".format(args.cid)
-            , image_size = 416
+            , image_size = 256
             , augment = False
             , multiscale = False
         ), 
@@ -106,7 +106,7 @@ if __name__ == "__main__":
             shuffle = False, 
         ), 
     }
-    model = Darknet("pytorchyolo/configs/yolov3.cfg")
+    model = Darknet("pytorchyolo/configs/yolov3-tiny.cfg")
     model.load_darknet_weights("../ckps/darknet53.conv.74")
     optimizer = optim.Adam(
         model.parameters(), 

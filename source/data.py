@@ -5,7 +5,7 @@ from libs import *
 class DetImageDataset(torch.utils.data.Dataset):
     def __init__(self, 
         images_path, labels_path
-        , image_size = 416
+        , image_size = 256
         , augment = False
         , multiscale = False
     ):
