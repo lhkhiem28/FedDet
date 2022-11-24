@@ -38,32 +38,33 @@ def client_fit_fn(
                 "fit", fit_loss, 
             ))
 
-        with torch.no_grad():
-            model.eval()
-            running_classes, running_statistics = [], []
-            for images, labels in tqdm.tqdm(fit_loaders["evaluate"], disable = not fitting_verbose):
-                images, labels = images.to(device), labels.to(device)
-                labels[:, 2:] = xywh2xyxy(labels[:, 2:])
-                labels[:, 2:] = labels[:, 2:]*int(fit_loaders["evaluate"].dataset.image_size)
+        if epoch == num_epochs:
+            with torch.no_grad():
+                model.eval()
+                running_classes, running_statistics = [], []
+                for images, labels in tqdm.tqdm(fit_loaders["evaluate"], disable = not fitting_verbose):
+                    images, labels = images.to(device), labels.to(device)
+                    labels[:, 2:] = xywh2xyxy(labels[:, 2:])
+                    labels[:, 2:] = labels[:, 2:]*int(fit_loaders["evaluate"].dataset.image_size)
 
-                logits = model(images)
-                logits = non_max_suppression(
-                    logits, 
-                    conf_thres = 0.1, iou_thres = 0.5, 
-                )
+                    logits = model(images)
+                    logits = non_max_suppression(
+                        logits, 
+                        conf_thres = 0.1, iou_thres = 0.5, 
+                    )
 
-                running_classes, running_statistics = running_classes + labels[:, 1].tolist(), running_statistics + get_batch_statistics(
-                    [logit.cpu() for logit in logits], labels.cpu(), 
-                    0.5, 
-                )
-        evaluate_map = ap_per_class(
-            *[np.concatenate(stats, 0) for stats in list(zip(*running_statistics))], 
-            running_classes, 
-        )[2].mean()
-        if fitting_verbose:
-            print("{:<8} -  map:{:.4f}".format(
-                "evaluate", evaluate_map, 
-            ))
+                    running_classes, running_statistics = running_classes + labels[:, 1].tolist(), running_statistics + get_batch_statistics(
+                        [logit.cpu() for logit in logits], labels.cpu(), 
+                        0.5, 
+                    )
+            evaluate_map = ap_per_class(
+                *[np.concatenate(stats, 0) for stats in list(zip(*running_statistics))], 
+                running_classes, 
+            )[2].mean()
+            if fitting_verbose:
+                print("{:<8} -  map:{:.4f}".format(
+                    "evaluate", evaluate_map, 
+                ))
 
     torch.save(model, "{}/client.ptl".format(save_ckp_dir))
     print("\nFinish Client Fitting ...\n" + " = "*16)
