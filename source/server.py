@@ -44,7 +44,7 @@ dataset = DetImageDataset(
 )
 test_loader = torch.utils.data.DataLoader(
     dataset, collate_fn = dataset.collate_fn, 
-    num_workers = 0, batch_size = 4, 
+    num_workers = 0, batch_size = 2, 
     shuffle = False, 
 )
 model = torch.load("../ckps/{}/server.ptl".format(args.dataset))

@@ -91,12 +91,12 @@ if __name__ == "__main__":
     fit_loaders = {
         "fit":torch.utils.data.DataLoader(
             datasets["fit"], collate_fn = datasets["fit"].collate_fn, 
-            num_workers = 0, batch_size = 4, 
+            num_workers = 0, batch_size = 2, 
             shuffle = True, 
         ), 
         "evaluate":torch.utils.data.DataLoader(
             datasets["evaluate"], collate_fn = datasets["evaluate"].collate_fn, 
-            num_workers = 0, batch_size = 4, 
+            num_workers = 0, batch_size = 2, 
             shuffle = False, 
         ), 
     }
