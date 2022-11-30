@@ -7,8 +7,10 @@ datasets/VOC2007/test/images/*
 datasets/VOC2007/test/labels/*
 !datasets/VOC2007/test/labels/.placeholder
 **/*.zip
+ckps/darknet53.conv.74
+ckps/*/*
+!ckps/*/.placeholder
 
 **/__pycache__
 **/*.out
 **/wandb
-ckps/*
