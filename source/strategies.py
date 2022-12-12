@@ -6,9 +6,11 @@ from engines import server_test_fn
 def metrics_aggregation_fn(metrics):
     fit_losses = [metric["fit_loss"] for _, metric in metrics]
     evaluate_maps = [metric["evaluate_map"] for _, metric in metrics]
+    round_training_times = [metric["round_training_time"] for _, metric in metrics]
     aggregated_metrics = {
         "fit_loss":sum(fit_losses)/len(fit_losses), 
         "evaluate_map":sum(evaluate_maps)/len(evaluate_maps), 
+        "round_training_time":sum(round_training_times)/len(round_training_times), 
     }
 
     return aggregated_metrics
@@ -36,6 +38,7 @@ class FedAvg(fl.server.strategy.FedAvg):
         )
         wandb.log({"fit_loss":aggregated_metrics["fit_loss"]}, step = server_round)
         wandb.log({"evaluate_map":aggregated_metrics["evaluate_map"]}, step = server_round)
+        wandb.log({"round_training_time":aggregated_metrics["round_training_time"]}, step = server_round)
 
         aggregated_parameters, results = super().aggregate_fit(
             server_round, 

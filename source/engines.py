@@ -11,6 +11,8 @@ def client_fit_fn(
     save_ckp_dir = "./", 
     fitting_verbose = True, 
 ):
+    start = timeit.default_timer()
+
     print("\nStart Client Fitting ...\n" + " = "*16)
     model = model.to(device)
 
@@ -71,6 +73,7 @@ def client_fit_fn(
     return {
         "fit_loss":fit_loss, 
         "evaluate_map":evaluate_map, 
+        "round_training_time":timeit.default_timer() - start, 
     }
 
 def server_test_fn(

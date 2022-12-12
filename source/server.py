@@ -22,7 +22,7 @@ dataset = DetImageDataset(
 )
 test_loader = torch.utils.data.DataLoader(
     dataset, collate_fn = dataset.collate_fn, 
-    num_workers = 4, batch_size = 8, 
+    num_workers = 4, batch_size = 12, 
     shuffle = False, 
 )
 initial_model = Darknet("pytorchyolo/configs/yolov3.cfg")
