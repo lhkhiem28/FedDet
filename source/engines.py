@@ -108,3 +108,4 @@ def server_test_fn(
     ))
 
     print("\nFinish Server Testing ...\n" + " = "*16)
+    return test_map
