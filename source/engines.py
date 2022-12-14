@@ -73,7 +73,7 @@ def client_fit_fn(
     return {
         "fit_loss":fit_loss, 
         "evaluate_map":evaluate_map, 
-        "round_training_time":timeit.default_timer() - start, 
+        "per_round_fitting_time":timeit.default_timer() - start, 
     }
 
 def server_test_fn(
